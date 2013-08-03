@@ -70,10 +70,10 @@ svg.append("defs").append("clipPath")
     .attr("width", width)
     .attr("height", height);
 
-var axis = svg.append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(x.axis = d3.svg.axis().scale(x).orient("bottom"));
+// var axis = svg.append("g")
+//     .attr("class", "x axis")
+//     .attr("transform", "translate(0," + height + ")")
+//     .call(x.axis = d3.svg.axis().scale(x).orient("bottom"));
 
 var path = svg.append("g")
     .attr("clip-path", "url(#clip)")
@@ -96,16 +96,18 @@ tick();
 
 
 function tick() {
-  console.log('called tick')
+  // console.log('called tick')
+
   // update the domains
   now = new Date();
   x.domain([now - (n - 2) * duration, now - duration]);
   y.domain([0, d3.max(data)]);
 
   // push the accumulated count onto the back, and reset the count
-  data.push((window.mouseYPos == undefined) ? 0 : $(window).height()-window.mouseYPos);
+  // data.push((window.mouseYPos == undefined) ? 0 : $(window).height()-window.mouseYPos);
+  data.push(Math.abs(Math.cos(Date.now()/1000)*1000));
   // data.push(Math.min(30, count));
-  console.log((window.mouseYPos == undefined) ? 'undefined!' : $(window).height()-window.mouseYPos);
+  // console.log((window.mouseYPos == undefined) ? 'undefined!' : $(window).height()-window.mouseYPos);
   // data.push(Math.min(30, count));
 
   // data.push(random());
@@ -117,10 +119,10 @@ function tick() {
       .attr("transform", null);
 
   // slide the x-axis left
-  axis.transition()
-      .duration(duration)
-      .ease("linear")
-      .call(x.axis);
+  // axis.transition()
+  //     .duration(duration)
+  //     .ease("linear")
+  //     .call(x.axis);
 
   // slide the line left
   path.transition()
@@ -211,4 +213,3 @@ function tick() {
 // }
 
 </script>
-
