@@ -1,4 +1,7 @@
 Rails3BootstrapDeviseCancan::Application.routes.draw do
+
+  get "/scratch", to: "home#scratch"
+
   authenticated :user do
     root :to => 'home#index'
   end
