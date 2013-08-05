@@ -34,12 +34,13 @@ var json = {"metrics":{"skin_temp":{"min":85.8,"max":97.2,"sum":98138.0,"summary
 (function() {
 
 var n = 243,
-    duration = 30,
+    duration = 20,
     now = new Date(Date.now() - duration),
     count = 0,
     // data = d3.range(n).map(function() { return 0; });
     random = d3.random.normal(0, 1),
-    data = d3.range(n).map(random);
+    data = d3.range(n).map(function() { return 0; });
+    // data = d3.range(n).map(random);
 
 var margin = {top: 6, right: 0, bottom: 20, left: 40},
     width = 960 - margin.right,
@@ -177,8 +178,8 @@ Number.prototype.between = function (min, max) {
 
   // pop the old data point off the front
   data.shift();
-  pointer = pointer + 5;
-  if (pointer == 550){
+  pointer = pointer + 12;
+  if (pointer == 360){
     pointer = 0;
   }
 }
