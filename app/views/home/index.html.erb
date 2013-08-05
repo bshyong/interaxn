@@ -34,23 +34,23 @@ var json = {"metrics":{"skin_temp":{"min":85.8,"max":97.2,"sum":98138.0,"summary
 (function() {
 
 var n = 243,
-    duration = 100,
+    duration = 30,
     now = new Date(Date.now() - duration),
     count = 0,
     // data = d3.range(n).map(function() { return 0; });
-    random = d3.random.normal(0, $(window).height()/2),
+    random = d3.random.normal(0, 1),
     data = d3.range(n).map(random);
 
 var margin = {top: 6, right: 0, bottom: 20, left: 40},
     width = 960 - margin.right,
-    height = 120 - margin.top - margin.bottom;
+    height = 220 - margin.top - margin.bottom;
 
 var x = d3.time.scale()
     .domain([now - (n - 2) * duration, now - duration])
     .range([0, width]);
 
 var y = d3.scale.linear()
-    .range([height, 0]);
+    .range([height, -10]);
 
 var line = d3.svg.line()
     .interpolate("basis")
@@ -81,6 +81,9 @@ var path = svg.append("g")
     .data([data])
     .attr("class", "line");
 
+
+var pointer = 0;
+
 tick();
 
 // d3.select(window)
@@ -95,17 +98,58 @@ tick();
   });
 
 
+
 function tick() {
+
+Number.prototype.between = function (min, max) {
+    return this > min && this < max;
+};
+
+  console.log("pointer: " + pointer);
+
+  if (pointer.between(0,50)){
+    // P wave
+    data.push(0.23*Math.sin(Math.PI*pointer/50));
+  }
+  else if (pointer.between(51,90)){
+    // PR segment
+    data.push(0);
+  }
+  else if (pointer.between(91,110)){
+    // Q wave
+    data.push(-0.6*Math.sin(Math.PI*(pointer-90)/20));
+  }
+  else if (pointer.between(111,140)){
+    // R wave
+    data.push(2.5*Math.sin(Math.PI*(pointer-110)/30));
+  }
+  else if (pointer.between(141, 160)){
+    // S wave
+    data.push(-1*Math.sin(Math.PI*(pointer-140)/20));
+  }
+  else if (pointer.between(161,210)){
+    // ST segment
+    data.push(0);
+  }
+  else if (pointer.between(211,290)){
+    // T wave
+    data.push(0.4*Math.sin(Math.PI*(pointer-211)/80));
+  }
+  else{
+    data.push(0);
+  }
+
   // console.log('called tick')
 
   // update the domains
   now = new Date();
   x.domain([now - (n - 2) * duration, now - duration]);
-  y.domain([0, d3.max(data)]);
+  y.domain([d3.min(data), d3.max(data)]);
 
   // push the accumulated count onto the back, and reset the count
   // data.push((window.mouseYPos == undefined) ? 0 : $(window).height()-window.mouseYPos);
-  data.push(Math.abs(Math.cos(Date.now()/1000)*1000));
+
+  // data.push(Date.now()%1000);
   // data.push(Math.min(30, count));
   // console.log((window.mouseYPos == undefined) ? 'undefined!' : $(window).height()-window.mouseYPos);
   // data.push(Math.min(30, count));
@@ -133,7 +177,10 @@ function tick() {
 
   // pop the old data point off the front
   data.shift();
-
+  pointer = pointer + 5;
+  if (pointer == 550){
+    pointer = 0;
+  }
 }
 
 })()
