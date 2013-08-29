@@ -3,6 +3,7 @@ Rails3BootstrapDeviseCancan::Application.routes.draw do
   get "/scratch", to: "home#scratch"
 
   authenticated :user do
+    get "runkeeper_auth", to: "auth#runkeeper"
     root :to => 'home#index'
   end
   root :to => "home#index"

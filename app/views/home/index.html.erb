@@ -2,6 +2,16 @@
 <% @users.each do |user| %>
   <p>User: <%=link_to user.name, user %></p>
 <% end %>
+<% if current_user.rk_auth.blank? %>
+<p>RunKeeper auth test
+<%= link_to "auth here", HealthGraph.authorize_url %>
+</p>
+<% else %>
+<p>
+<%= HealthGraph::User.new(current_user.rk_auth).profile.inspect %>
+</p>
+<% end %>
+
 
 <div id="heart-waveform"></div>
 
