@@ -28,3 +28,6 @@ gem "binding_of_caller", ">= 0.7.1", :group => :development, :platforms => [:mri
 gem 'thin'
 gem 'haml'
 gem 'health_graph'
+gem "json"
+gem "typhoeus"
+gem "quimby"

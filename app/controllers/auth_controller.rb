@@ -7,4 +7,11 @@ class AuthController < ApplicationController
     redirect_to root_url
   end
 
+  def foursquare
+    foursquare = Foursquare::Base.new(FSQ_CID, FSQ_CS)
+    access_token = foursquare.access_token(params[:code], root_url)
+    current_user.update_column(:foursq_auth, access_token)
+    redirect_to root_url
+  end
+
 end

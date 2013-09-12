@@ -27,14 +27,32 @@
       <p>User: <%=link_to user.name, user %></p>
     <% end %>
     <% if current_user.rk_auth.blank? %>
-    <p>RunKeeper auth test
-    <%= link_to "auth here", HealthGraph.authorize_url %>
+    <p>
+      <h4>RunKeeper auth test</h4>
+      <%= link_to "auth here", HealthGraph.authorize_url %>
     </p>
     <% else %>
     <p>
-    <%= HealthGraph::User.new(current_user.rk_auth).profile.inspect %>
+      <h4>RunKeeper account linked!</h4>
+      <%= HealthGraph::User.new(current_user.rk_auth).profile.inspect %>
     </p>
     <% end %>
+    <% if current_user.foursq_auth.blank? %>
+    <p>
+      <h4>Foursquare auth test</h4>
+      <%= link_to "Foursquare auth here", Foursquare::Base.new(FSQ_CID, FSQ_CS).authorize_url(foursquare_auth_url) %>
+    </p>
+    <% else %>
+    <p>
+      <h4>Foursquare account linked!</h4>
+      <% foursq = Foursquare::Base.new(current_user.foursq_auth).users.find("self") %>
+      <% foursq.checkins.each do |checkin| %>
+        <%= "#{checkin.venue.name} #{time_ago_in_words(checkin.created_at)}" %>
+        <br />
+      <% end %>
+    </p>
+    <% end %>
+
   </div>
 </div>
 
