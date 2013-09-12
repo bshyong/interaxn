@@ -1,19 +1,42 @@
-<h3>Home</h3>
-<% @users.each do |user| %>
-  <p>User: <%=link_to user.name, user %></p>
-<% end %>
-<% if current_user.rk_auth.blank? %>
-<p>RunKeeper auth test
-<%= link_to "auth here", HealthGraph.authorize_url %>
-</p>
-<% else %>
-<p>
-<%= HealthGraph::User.new(current_user.rk_auth).profile.inspect %>
-</p>
-<% end %>
+<div class="row">
+  <div class="span3 well">
+    <h1><small>On the move</small></h1>
+    <h1>63 bpm</h1>
+    <h4><small>0.03 prespiration</small></h4>
+    <h4><small>2.3 cals/min</small></h4>
+  </div>
+  <div class="span8" id="heart-waveform"></div>
+</div>
 
+<div class="row">
+  <div class="span3">
+    <h3>Last at</h3>
+    <p>
+      Display last visited Foursquare location here
+    </p>
+  </div>
+  <div class="span9">
 
-<div id="heart-waveform"></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="span12">
+    <h3>Home</h3>
+    <% @users.each do |user| %>
+      <p>User: <%=link_to user.name, user %></p>
+    <% end %>
+    <% if current_user.rk_auth.blank? %>
+    <p>RunKeeper auth test
+    <%= link_to "auth here", HealthGraph.authorize_url %>
+    </p>
+    <% else %>
+    <p>
+    <%= HealthGraph::User.new(current_user.rk_auth).profile.inspect %>
+    </p>
+    <% end %>
+  </div>
+</div>
 
 <style>
 
@@ -69,7 +92,8 @@ var line = d3.svg.line()
     .y(function(d, i) { return y(d); });
 
 var svg = d3.select("#heart-waveform").append("p").append("svg")
-    .attr("width", width + margin.left + margin.right)
+    // .attr("width", width + margin.left + margin.right)
+    .attr("width", "100%")
     .attr("height", height + margin.top + margin.bottom)
     .style("margin-left", -margin.left + "px")
   .append("g")
